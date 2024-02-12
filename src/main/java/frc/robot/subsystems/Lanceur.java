@@ -4,8 +4,9 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
+
+import com.ctre.phoenix6.hardware.TalonFX;
+
 
 import static edu.wpi.first.units.MutableMeasure.mutable;
 import static edu.wpi.first.units.Units.Rotations;
@@ -23,10 +24,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 public class Lanceur extends SubsystemBase {
-  private final CANSparkMax moteurG = new CANSparkMax(10, MotorType.kBrushless);
-  private final CANSparkMax moteurD = new CANSparkMax(9, MotorType.kBrushless);
+  private final TalonFX moteurG = new TalonFX(4);
+  private final TalonFX moteurD = new TalonFX(5);
 
-  private final double conversionEncodeur = 1;// à déterminer
 
   // Mutable holder for unit-safe voltage values, persisted to avoid reallocation.
   private final MutableMeasure<Voltage> voltageApplique = mutable(Volts.of(0));
@@ -80,12 +80,6 @@ public class Lanceur extends SubsystemBase {
     moteurG.setInverted(true);
     moteurD.setInverted(false);
 
-    moteurG.getEncoder().setPositionConversionFactor(conversionEncodeur);
-    moteurG.getEncoder().setVelocityConversionFactor(conversionEncodeur / 60); // pour obtenir des rotation par seconde
-
-    moteurD.getEncoder().setPositionConversionFactor(conversionEncodeur);
-    moteurD.getEncoder().setVelocityConversionFactor(conversionEncodeur / 60); // pour obtenir des rotation par seconde
-
   }
 
   @Override
@@ -98,19 +92,21 @@ public class Lanceur extends SubsystemBase {
   }
 
   public double getPositionG() {
-    return moteurG.getEncoder().getPosition();// en rotation
+    return moteurG.getPosition().getValueAsDouble();// en rotation
   }
 
   public double getVitesseG() {
-    return moteurG.getEncoder().getVelocity();// en rotation par seconde
+    return moteurG.getVelocity().getValueAsDouble();// en rotation par seconde
+
   }
 
   public double getPositionD() {
-    return moteurD.getEncoder().getPosition();
+    return moteurD.getPosition().getValueAsDouble();
   }
 
   public double getVitesseD() {
-    return moteurD.getEncoder().getVelocity();
+    return moteurD.getVelocity().getValueAsDouble();
+
   }
 
   /////// Commande SysID
