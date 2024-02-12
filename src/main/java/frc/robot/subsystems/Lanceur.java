@@ -6,7 +6,7 @@ package frc.robot.subsystems;
 
 
 import com.ctre.phoenix6.hardware.TalonFX;
-
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import static edu.wpi.first.units.MutableMeasure.mutable;
 import static edu.wpi.first.units.Units.Rotations;
@@ -79,6 +79,8 @@ public class Lanceur extends SubsystemBase {
   public Lanceur() {
     moteurG.setInverted(true);
     moteurD.setInverted(false);
+    moteurG.setNeutralMode(NeutralModeValue.Coast);
+    moteurD.setNeutralMode(NeutralModeValue.Coast);
 
   }
 
